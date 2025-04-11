@@ -60,13 +60,13 @@ export const useChat = () => {
           const decoded = decodeUnicode(event.data);
           setIsLoading(false);
 
-          if (event.type === "end") {
-            eventSource.close();
-            setLastMessage(null);
-            setIsFetching(false);
-            setStep("온보딩평가");
-            return;
-          }
+          // if (event.type === "end") {
+          //   eventSource.close();
+          //   setLastMessage(null);
+          //   setIsFetching(false);
+          //   setStep("온보딩평가");
+          //   return;
+          // }
 
           currentBotMessage.content += decoded;
           setLastMessage({ ...currentBotMessage });
@@ -77,6 +77,9 @@ export const useChat = () => {
           setLastMessage(null);
           messagesRef.current.push(currentBotMessage);
           setIsFetching(false);
+          if (currentBotMessage.content.includes("챗봇 종료")) {
+            setStep("온보딩평가");
+          }
         };
       } catch {
         setIsFetching(false);
