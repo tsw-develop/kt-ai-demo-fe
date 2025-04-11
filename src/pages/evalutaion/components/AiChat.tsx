@@ -1,4 +1,3 @@
-import axios from "axios";
 import { memo, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -75,15 +74,33 @@ export const AiChat = memo(
         setIsLoading(true);
         onEnd?.(false);
 
-        const res = await axios.get(
+        const res = await fetch(
           `http://52.231.108.153:8000/summary-datas/${summaryDataMap[data]}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "text/event-stream",
+            },
+          },
         );
 
-        if (res.status === 200) {
-          setAiMessage(res.data);
-          setIsLoading(false);
-          onEnd?.(true);
+        setIsLoading(false);
+        const reader = res.body?.getReader();
+        const decoder = new TextDecoder();
+
+        if (!reader) return;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          const text = decoder.decode(value || new Uint8Array(), { stream: true });
+          setAiMessage((prev) => prev + text);
         }
+
+        onEnd?.(true);
       };
 
       if (type === "문제풀이") {

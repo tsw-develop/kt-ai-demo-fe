@@ -6,9 +6,10 @@ interface Props {
   className?: string;
   placeholder?: string;
   onEnter?: (content: string) => void | boolean | Promise<void>;
+  disabled?: boolean;
 }
 
-export const ChatInput = ({ placeholder, className, onEnter }: Props) => {
+export const ChatInput = ({ placeholder, className, onEnter, disabled }: Props) => {
   const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       if (e.metaKey || e.shiftKey) {
@@ -46,6 +47,7 @@ export const ChatInput = ({ placeholder, className, onEnter }: Props) => {
         className="field-sizing-content max-h-[30rem] flex-1 resize-none outline-none"
         onKeyDown={handleEnter}
         placeholder={placeholder}
+        disabled={disabled}
       />
 
       <div className="flex gap-[1.5rem]">
