@@ -1,0 +1,37 @@
+name: Deploy Test Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          # npm 캐싱 추가 (선택 사항이지만 빌드 속도 향상에 도움)
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci # package-lock.json 기반 설치
+
+      - name: Build project
+        run: npm run build # package.json의 build 스크립트 실행 (빌드 결과물이 'dist' 폴더에 생성된다고 가정)
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }} # 예: ap-northeast-2
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete # dist 폴더 내용을 S3 버킷과 동기화 (기존 파일 삭제 옵션 포함)
