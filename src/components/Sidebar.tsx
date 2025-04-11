@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { type ComponentProps } from "react";
 
+import logo from "@/assets/image 2.svg?url";
+
 export const Sidebar = () => {
   // const previousSelectedItem = useRef<HTMLButtonElement>(null);
 
@@ -35,7 +37,7 @@ export const Sidebar = () => {
 
   return (
     <aside className="h-dvh w-[31rem] bg-white">
-      <img className="m-[5rem]" src="/public/image 2.svg" alt="logo" />
+      <img className="m-[5rem]" src={logo} alt="logo" />
 
       <div className="flex flex-col divide-y divide-[#BABABA]">
         <SidebarGroup>
