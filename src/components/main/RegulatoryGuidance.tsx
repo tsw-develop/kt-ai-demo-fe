@@ -22,7 +22,6 @@ const RegulatoryGuidance = () => {
     send("");
   }, []);
 
-  // 배포테스트
   return (
     <>
       <div ref={containerRef}>
