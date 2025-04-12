@@ -138,7 +138,7 @@ export const AiChat = memo(
     if (isLoading)
       return (
         <Chat>
-          <span className="relative m-[1.6rem] flex size-[1.2rem]">
+          <span className="relative my-[1.6rem] flex size-[1.2rem]">
             <span className="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
             <span className="bg-primary relative inline-flex size-[1.2rem] rounded-full"></span>
           </span>

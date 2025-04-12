@@ -61,7 +61,7 @@ export const EvaluationPage = ({ sessionId }: Props) => {
   };
 
   return (
-    <>
+    <section className="mt-[5rem] border-t border-gray-300 pt-[5rem]">
       <ChatContainer>
         <AiChat sessionId={sessionId} userMessage="문제 생성" onEnd={setIsEnd} />
         {Array.from(messages.entries()).map(([key, message]) => {
@@ -92,6 +92,6 @@ export const EvaluationPage = ({ sessionId }: Props) => {
             : send
         }
       />
-    </>
+    </section>
   );
 };
