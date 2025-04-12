@@ -9,7 +9,7 @@ const RegulatoryGuidance = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { messagesRef, lastMessage, send, isLoading, isFetching } = useChat();
 
-  // console.log(isLoading, lastMessage);
+  console.log(messagesRef, lastMessage);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -31,7 +31,7 @@ const RegulatoryGuidance = () => {
           ))}
 
           {isLoading ? (
-            <span className="relative m-[1.6rem] flex size-[1.2rem]">
+            <span className="relative my-[1.6rem] flex size-[1.2rem]">
               <span className="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
               <span className="bg-primary relative inline-flex size-[1.2rem] rounded-full"></span>
             </span>
@@ -49,13 +49,7 @@ const RegulatoryGuidance = () => {
       <ChatInput
         className="fixed bottom-[2rem] left-[calc(50%+8rem)] w-[30%] translate-x-[calc(-50%+8rem)]"
         placeholder="무엇이든 물어보세요."
-        onEnter={
-          isFetching
-            ? () => {
-                return false;
-              }
-            : send
-        }
+        onEnter={isFetching ? undefined : send}
       />
     </>
   );

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 interface Props {
   className?: string;
   placeholder?: string;
-  onEnter?: (content: string) => void | boolean | Promise<void>;
+  onEnter?: (content: string) => void;
   disabled?: boolean;
 }
 
@@ -20,13 +20,8 @@ export const ChatInput = ({ placeholder, className, onEnter, disabled }: Props) 
 
       const content = e.currentTarget.value;
 
-      if (content && content.trim()) {
-        const shouldContinue = onEnter?.(content);
-
-        if (shouldContinue === false) {
-          return;
-        }
-
+      if (content && content.trim() && onEnter) {
+        onEnter(content);
         e.currentTarget.value = "";
       }
     }
