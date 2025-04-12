@@ -11,7 +11,8 @@ type SummaryData =
   | "근무시간 & 재택근무"
   | "휴가/병가/육아휴직"
   | "보안 규정"
-  | "복지제도";
+  | "복지제도"
+  | "온보딩 종료하기";
 
 const summaryDataMap = {
   "사내 규정 & 복지 요약 보기": "all",
@@ -19,6 +20,7 @@ const summaryDataMap = {
   "휴가/병가/육아휴직": "holiday",
   "보안 규정": "security",
   복지제도: "welfare",
+  "온보딩 종료하기": "end",
 };
 
 interface Props {
@@ -148,7 +150,7 @@ export const AiChat = memo(
     return (
       <>
         <Chat>
-          <ReactMarkdown className="max-w-[70rem]">{aiMessage}</ReactMarkdown>
+          <ReactMarkdown>{aiMessage}</ReactMarkdown>
         </Chat>
         {isTaskEnd && <Summary onClick={onSummaryClick} />}
       </>

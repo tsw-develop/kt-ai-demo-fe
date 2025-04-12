@@ -35,7 +35,7 @@ export const EvaluationPage = ({ sessionId }: Props) => {
     if (Object.keys(summaryDataMap).includes(message)) {
       setMessages((prev) => {
         const newMap = new Map(prev);
-        newMap.set(crypto.randomUUID(), { type: "총평", content: message });
+        newMap.set(new Date().toISOString(), { type: "총평", content: message });
         return newMap;
       });
       return;
@@ -43,7 +43,7 @@ export const EvaluationPage = ({ sessionId }: Props) => {
 
     setMessages((prev) => {
       const newMap = new Map(prev);
-      newMap.set(crypto.randomUUID(), { type: "문제풀이", content: message });
+      newMap.set(new Date().toISOString(), { type: "문제풀이", content: message });
       return newMap;
     });
   };
@@ -55,7 +55,7 @@ export const EvaluationPage = ({ sessionId }: Props) => {
 
     setMessages((prev) => {
       const newMap = new Map(prev);
-      newMap.set(crypto.randomUUID(), { type: "총평", content: message });
+      newMap.set(new Date().toISOString(), { type: "총평", content: message });
       return newMap;
     });
   };
