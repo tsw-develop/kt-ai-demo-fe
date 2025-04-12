@@ -29,13 +29,23 @@ interface Props {
   userMessage: string;
   onEnd?: (isLoading: boolean) => void;
   onSummaryClick?: (message: string) => void;
+  ref?: React.RefObject<HTMLDivElement | null>;
 }
 
 export const AiChat = memo(
-  ({ type = "문제풀이", sessionId, userMessage, onEnd, onSummaryClick }: Props) => {
+  ({ type = "문제풀이", sessionId, userMessage, onEnd, onSummaryClick, ref }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [aiMessage, setAiMessage] = useState("");
     const [isTaskEnd, setIsTaskEnd] = useState(false); // 총평 단계 여부
+
+    useEffect(() => {
+      if (!ref) return;
+
+      const container = ref.current;
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }, [aiMessage]);
 
     useEffect(() => {
       const call = async (message: string) => {

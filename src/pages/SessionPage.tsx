@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Navigate } from "react-router-dom";
 
 import RegulatoryGuidance from "@/components/main/RegulatoryGuidance";
@@ -13,16 +14,11 @@ const STEP_LEVEL = {
 
 export const SessionPage = () => {
   const { sessionId, step } = useSessionStore();
+  const scrollSectionRef = useRef<HTMLDivElement>(null);
 
   if (!sessionId) {
     return <Navigate to="/" />;
   }
-
-  // const prev = localStorage.getItem("chatHistory");
-
-  // if (prev) {
-  //   console.log(prev);
-  // }
 
   return (
     <PageContainer>
@@ -30,9 +26,9 @@ export const SessionPage = () => {
         <h2 className="text-[3.2rem] font-bold text-[#4C4C4C]">{step}</h2>
       </PageHeader>
 
-      <PageContent>
-        {STEP_LEVEL[step] >= 1 && <RegulatoryGuidance />}
-        {STEP_LEVEL[step] >= 2 && <EvaluationPage sessionId={sessionId} />}
+      <PageContent ref={scrollSectionRef}>
+        {STEP_LEVEL[step] >= 1 && <RegulatoryGuidance ref={scrollSectionRef} />}
+        {STEP_LEVEL[step] >= 2 && <EvaluationPage sessionId={sessionId} ref={scrollSectionRef} />}
       </PageContent>
     </PageContainer>
   );

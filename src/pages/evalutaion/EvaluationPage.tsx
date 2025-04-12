@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Chat, ChatContainer } from "@/components/chat";
 import { ChatInput } from "@/components/ui/ChatInput";
@@ -13,6 +13,7 @@ type MessageType = {
 
 interface Props {
   sessionId: string;
+  ref: React.RefObject<HTMLDivElement | null>;
 }
 
 const summaryDataMap = {
@@ -23,7 +24,7 @@ const summaryDataMap = {
   복지제도: "welfare",
 };
 
-export const EvaluationPage = ({ sessionId }: Props) => {
+export const EvaluationPage = ({ sessionId, ref }: Props) => {
   const [messages, setMessages] = useState<Map<string, MessageType>>(new Map());
   const [isEnd, setIsEnd] = useState(true); // AI응답 완료 여부
 
@@ -60,10 +61,17 @@ export const EvaluationPage = ({ sessionId }: Props) => {
     });
   };
 
+  useEffect(() => {
+    const container = ref.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <section className="mt-[5rem] border-t border-gray-300 pt-[5rem]">
       <ChatContainer>
-        <AiChat sessionId={sessionId} userMessage="문제 생성" onEnd={setIsEnd} />
+        <AiChat sessionId={sessionId} userMessage="문제 생성" onEnd={setIsEnd} ref={ref} />
         {Array.from(messages.entries()).map(([key, message]) => {
           return (
             <div key={key} className="flex flex-col gap-[1.5rem]">
@@ -71,6 +79,7 @@ export const EvaluationPage = ({ sessionId }: Props) => {
                 <SpeechBubble>{message.content}</SpeechBubble>
               </Chat>
               <AiChat
+                ref={ref}
                 type={message.type}
                 sessionId={sessionId}
                 userMessage={message.content}

@@ -5,14 +5,14 @@ import { MessageItemComponent } from "@/components/main/MessageItem";
 import { ChatInput } from "@/components/ui/ChatInput";
 import { useChat } from "@/hooks/useChat";
 
-const RegulatoryGuidance = () => {
+type Props = { ref: React.RefObject<HTMLDivElement | null> };
+
+const RegulatoryGuidance = ({ ref }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { messagesRef, lastMessage, send, isLoading, isFetching } = useChat();
 
-  console.log(messagesRef, lastMessage);
-
   useEffect(() => {
-    const container = containerRef.current;
+    const container = ref.current;
     if (container) {
       container.scrollTop = container.scrollHeight;
     }
