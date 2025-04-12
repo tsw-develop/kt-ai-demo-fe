@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { Chat, ChatContainer } from "@/components/chat";
 import { ChatInput } from "@/components/ui/ChatInput";
@@ -24,17 +24,8 @@ const summaryDataMap = {
 };
 
 export const EvaluationPage = ({ sessionId }: Props) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const [messages, setMessages] = useState<Map<string, MessageType>>(new Map());
   const [isEnd, setIsEnd] = useState(true); // AI응답 완료 여부
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (container) {
-      container.scrollTop = container.scrollHeight;
-    }
-  }, [messages]);
 
   const send = (message: string) => {
     if (!isEnd) return;
@@ -71,7 +62,7 @@ export const EvaluationPage = ({ sessionId }: Props) => {
 
   return (
     <>
-      <ChatContainer ref={containerRef}>
+      <ChatContainer>
         <AiChat sessionId={sessionId} userMessage="문제 생성" onEnd={setIsEnd} />
         {Array.from(messages.entries()).map(([key, message]) => {
           return (
@@ -93,7 +84,13 @@ export const EvaluationPage = ({ sessionId }: Props) => {
       <ChatInput
         className="fixed bottom-[2rem] left-[calc(50%+8rem)] w-[30%] translate-x-[calc(-50%+8rem)]"
         placeholder="무엇이든 물어보세요."
-        onEnter={send}
+        onEnter={
+          !isEnd
+            ? () => {
+                return false;
+              }
+            : send
+        }
       />
     </>
   );

@@ -1,3 +1,4 @@
+import { isAxiosError } from "axios";
 import { memo, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -36,77 +37,93 @@ export const AiChat = memo(
 
     useEffect(() => {
       const call = async (message: string) => {
-        setIsLoading(true);
-        onEnd?.(false);
+        try {
+          setIsLoading(true);
+          onEnd?.(false);
 
-        const res = await fetch("http://52.231.108.153:8000/quiz/stream", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "text/event-stream",
-          },
-          body: JSON.stringify({
-            session_id: sessionId,
-            messages: message,
-          }),
-        });
-
-        setIsLoading(false);
-        const reader = res.body?.getReader();
-        const decoder = new TextDecoder();
-
-        if (!reader) return;
-
-        let temp = "";
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-            break;
-          }
-          const text = decoder.decode(value || new Uint8Array(), { stream: true });
-          temp += text;
-          setAiMessage((prev) => prev + text);
-        }
-
-        if (temp.includes("신입사원 온보딩 평가 결과를 바탕으로 총평을 드리겠습니다.")) {
-          setIsTaskEnd(true);
-        }
-
-        onEnd?.(true);
-      };
-
-      const call_2 = async (data: SummaryData) => {
-        setIsLoading(true);
-        onEnd?.(false);
-
-        const res = await fetch(
-          `http://52.231.108.153:8000/summary-datas/${summaryDataMap[data]}`,
-          {
-            method: "GET",
+          const res = await fetch("http://52.231.108.153:8000/quiz/stream", {
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
               Accept: "text/event-stream",
             },
-          },
-        );
+            body: JSON.stringify({
+              session_id: sessionId,
+              messages: message,
+            }),
+          });
 
-        setIsLoading(false);
-        const reader = res.body?.getReader();
-        const decoder = new TextDecoder();
+          setIsLoading(false);
+          const reader = res.body?.getReader();
+          const decoder = new TextDecoder();
 
-        if (!reader) return;
+          if (!reader) return;
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-            break;
+          let temp = "";
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+              break;
+            }
+            const text = decoder.decode(value || new Uint8Array(), { stream: true });
+            temp += text;
+            setAiMessage((prev) => prev + text);
           }
-          const text = decoder.decode(value || new Uint8Array(), { stream: true });
-          setAiMessage((prev) => prev + text);
-        }
 
-        onEnd?.(true);
+          if (temp.includes("신입사원 온보딩 평가 결과를 바탕으로 총평을 드리겠습니다.")) {
+            setIsTaskEnd(true);
+          }
+        } catch (error) {
+          if (isAxiosError(error)) {
+            alert(error.code + "오류가 발생했습니다.");
+          }
+        } finally {
+          setIsLoading(false);
+          onEnd?.(true);
+        }
+      };
+
+      const call_2 = async (data: SummaryData) => {
+        if (!summaryDataMap[data]) return;
+
+        try {
+          setIsLoading(true);
+          onEnd?.(false);
+
+          const res = await fetch(
+            `http://52.231.108.153:8000/summary-datas/${summaryDataMap[data]}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "text/event-stream",
+              },
+            },
+          );
+
+          setIsLoading(false);
+          const reader = res.body?.getReader();
+          const decoder = new TextDecoder();
+
+          if (!reader) return;
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+              break;
+            }
+            const text = decoder.decode(value || new Uint8Array(), { stream: true });
+            setAiMessage((prev) => prev + text);
+          }
+        } catch (error) {
+          if (isAxiosError(error)) {
+            alert(error.code + "오류가 발생했습니다.");
+          }
+        } finally {
+          setIsLoading(false);
+          onEnd?.(true);
+        }
       };
 
       if (type === "문제풀이") {

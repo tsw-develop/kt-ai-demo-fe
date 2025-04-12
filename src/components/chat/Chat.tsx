@@ -1,13 +1,11 @@
 import { Slot } from "@radix-ui/react-slot";
-import { memo } from "react";
+import { ComponentPropsWithRef, memo } from "react";
 
-interface Props {
-  children?: React.ReactNode;
-}
+type Props = ComponentPropsWithRef<"div">;
 
-export const Chat = memo(({ children }: Props) => {
+export const Chat = memo(({ children, ...props }: Props) => {
   return (
-    <Slot className="animate-in fade-in slide-in-from-bottom-15 w-fit duration-150">
+    <Slot className="animate-in fade-in slide-in-from-bottom-15 w-fit duration-150" {...props}>
       {children}
     </Slot>
   );
