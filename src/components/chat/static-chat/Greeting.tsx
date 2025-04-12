@@ -38,14 +38,13 @@ export const Greeting = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      <span>
+      <p>
         👋 팀에 오신 것을 환영합니다! <br /> 지금부터 온보딩을 시작하겠습니다. 10-15분 가량 소요되는
         점을 미리 알려드려요
-      </span>
-      <br />
-      <span>시작할 준비 되셨나요?</span>
+      </p>
+      <p>시작할 준비 되셨나요?</p>
       <div
-        className="flex gap-[.8rem]"
+        className="mt-[1rem] inline-flex gap-[.8rem]"
         onClick={(e) => {
           e.currentTarget.style.display = "none";
         }}
