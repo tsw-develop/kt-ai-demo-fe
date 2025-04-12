@@ -77,6 +77,8 @@ export const AiChat = memo(
       };
 
       const call_2 = async (data: SummaryData) => {
+        if (!summaryDataMap[data]) return;
+
         setIsLoading(true);
         onEnd?.(false);
 
