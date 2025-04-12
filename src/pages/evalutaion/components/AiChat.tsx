@@ -148,7 +148,7 @@ export const AiChat = memo(
     return (
       <>
         <Chat>
-          <ReactMarkdown className="max-w-[70rem]">{aiMessage}</ReactMarkdown>
+          <ReactMarkdown>{aiMessage}</ReactMarkdown>
         </Chat>
         {isTaskEnd && <Summary onClick={onSummaryClick} />}
       </>
