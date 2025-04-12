@@ -96,6 +96,7 @@ export const AiChat = memo(
         }
       };
 
+      // 총평단게
       const call_2 = async (data: SummaryData) => {
         if (!summaryDataMap[data]) return;
 
@@ -104,7 +105,7 @@ export const AiChat = memo(
           onEnd?.(false);
 
           const res = await fetch(
-            `http://52.231.108.153:8000/summary-datas/${summaryDataMap[data]}`,
+            `http://52.231.108.153:8000/summary-datas/${summaryDataMap[data]}?session_id=${sessionId}`,
             {
               method: "GET",
               headers: {
