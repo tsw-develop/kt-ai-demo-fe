@@ -38,6 +38,7 @@ export const AiChat = memo(
     const [isTaskEnd, setIsTaskEnd] = useState(false); // 총평 단계 여부
 
     useEffect(() => {
+      // 문제풀이 단계
       const call = async (message: string) => {
         try {
           setIsLoading(true);
@@ -86,6 +87,7 @@ export const AiChat = memo(
         }
       };
 
+      // 총평단게
       const call_2 = async (data: SummaryData) => {
         if (!summaryDataMap[data]) return;
 
@@ -94,7 +96,7 @@ export const AiChat = memo(
           onEnd?.(false);
 
           const res = await fetch(
-            `http://52.231.108.153:8000/summary-datas/${summaryDataMap[data]}`,
+            `http://52.231.108.153:8000/summary-datas/${summaryDataMap[data]}?session_id=${sessionId}`,
             {
               method: "GET",
               headers: {
