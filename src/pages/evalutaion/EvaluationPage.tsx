@@ -84,7 +84,13 @@ export const EvaluationPage = ({ sessionId }: Props) => {
       <ChatInput
         className="fixed bottom-[2rem] left-[calc(50%+8rem)] w-[30%] translate-x-[calc(-50%+8rem)]"
         placeholder="무엇이든 물어보세요."
-        onEnter={send}
+        onEnter={
+          !isEnd
+            ? () => {
+                return false;
+              }
+            : send
+        }
       />
     </>
   );

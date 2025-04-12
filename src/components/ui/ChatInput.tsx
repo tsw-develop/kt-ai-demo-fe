@@ -11,7 +11,7 @@ interface Props {
 
 export const ChatInput = ({ placeholder, className, onEnter, disabled }: Props) => {
   const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
       if (e.metaKey || e.shiftKey) {
         return;
       }
