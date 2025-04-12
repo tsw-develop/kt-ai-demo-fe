@@ -3,6 +3,8 @@ import ReactMarkdown from "react-markdown";
 
 import { Chat } from "@/components/chat";
 
+import { Summary } from "./Summary";
+
 type SummaryData =
   | "사내 규정 & 복지 요약 보기"
   | "근무시간 & 재택근무"
@@ -23,13 +25,14 @@ interface Props {
   sessionId: string;
   userMessage: string;
   onEnd?: (isLoading: boolean) => void;
-  onTaskEnd?: () => void;
+  onSummaryClick?: (message: string) => void;
 }
 
 export const AiChat = memo(
-  ({ type = "문제풀이", sessionId, userMessage, onEnd, onTaskEnd }: Props) => {
+  ({ type = "문제풀이", sessionId, userMessage, onEnd, onSummaryClick }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [aiMessage, setAiMessage] = useState("");
+    const [isTaskEnd, setIsTaskEnd] = useState(false); // 총평 단계 여부
 
     useEffect(() => {
       const call = async (message: string) => {
@@ -54,17 +57,20 @@ export const AiChat = memo(
 
         if (!reader) return;
 
+        let temp = "";
+
         while (true) {
           const { done, value } = await reader.read();
           if (done) {
             break;
           }
           const text = decoder.decode(value || new Uint8Array(), { stream: true });
+          temp += text;
           setAiMessage((prev) => prev + text);
         }
 
-        if (aiMessage.includes("신입사원 온보딩 평가 결과를 바탕으로 총평을 드리겠습니다.")) {
-          onTaskEnd?.();
+        if (temp.includes("신입사원 온보딩 평가 결과를 바탕으로 총평을 드리겠습니다.")) {
+          setIsTaskEnd(true);
         }
 
         onEnd?.(true);
@@ -123,9 +129,12 @@ export const AiChat = memo(
       );
 
     return (
-      <Chat>
-        <ReactMarkdown className="max-w-[70rem]">{aiMessage}</ReactMarkdown>
-      </Chat>
+      <>
+        <Chat>
+          <ReactMarkdown className="max-w-[70rem]">{aiMessage}</ReactMarkdown>
+        </Chat>
+        {isTaskEnd && <Summary onClick={onSummaryClick} />}
+      </>
     );
   },
 );

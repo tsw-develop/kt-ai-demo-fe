@@ -29,6 +29,7 @@ export const Summary = ({ onClick }: Props) => {
           <Button name="휴가/병가/육아휴직">[🔁 휴가/병가/육아휴직]</Button>
           <Button name="보안 규정">[🔁 보안 규정]</Button>
           <Button name="복지제도">[🔁 복지제도]</Button>
+          <Button name="온보딩 종료하기">[🔁 온보딩 종료하기]</Button>
         </div>
       </div>
     </Chat>

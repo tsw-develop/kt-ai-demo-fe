@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Loader } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "zustand";
@@ -159,7 +159,7 @@ const InfoForm = () => {
         type="submit"
         className="bg-primary flex w-full justify-center border-none text-white"
       >
-        {isLoading ? <Loader className="animate-spin" /> : "제출하기"}
+        {isLoading ? <LoaderCircle className="animate-spin" /> : "제출하기"}
       </Button>
     </form>
   );
