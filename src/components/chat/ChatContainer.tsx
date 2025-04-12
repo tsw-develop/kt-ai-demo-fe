@@ -1,7 +1,11 @@
-interface Props {
-  children?: React.ReactNode;
-}
+import { ComponentPropsWithRef } from "react";
 
-export const ChatContainer = ({ children }: Props) => {
-  return <div className="flex flex-col gap-[3rem]">{children}</div>;
+type Props = ComponentPropsWithRef<"div">;
+
+export const ChatContainer = ({ children, ...props }: Props) => {
+  return (
+    <div className="flex flex-col gap-[3rem]" {...props}>
+      {children}
+    </div>
+  );
 };
