@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios";
 import { memo, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 
 import { Chat } from "@/components/chat";
 
@@ -161,7 +162,7 @@ export const AiChat = memo(
     return (
       <>
         <Chat>
-          <ReactMarkdown>{aiMessage}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkBreaks]}>{aiMessage}</ReactMarkdown>
         </Chat>
         {isTaskEnd && <Summary onClick={onSummaryClick} />}
       </>
