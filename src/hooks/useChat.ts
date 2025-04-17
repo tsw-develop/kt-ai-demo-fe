@@ -35,7 +35,7 @@ export const useChat = () => {
           setLastMessage({ ...newMyMessage });
         }
 
-        await axios.post("http://52.231.108.153:8000/chat", {
+        await axios.post("http://40.82.129.29:8000/chat", {
           session_id: sessionId,
           message,
           is_first_message: isFirstMessage.current,
@@ -48,7 +48,7 @@ export const useChat = () => {
 
         isFirstMessage.current = false;
 
-        const eventSource = new EventSource(`http://52.231.108.153:8000/stream/${sessionId}`);
+        const eventSource = new EventSource(`http://40.82.129.29:8000/stream/${sessionId}`);
 
         const currentBotMessage: MessageItem = {
           id: String(Date.now() + 1),

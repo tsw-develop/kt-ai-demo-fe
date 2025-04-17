@@ -93,7 +93,7 @@ const InfoForm = () => {
 
     setIsLoading(true);
 
-    const res = await axios.post("http://52.231.108.153:8000/users", {
+    const res = await axios.post("http://40.82.129.29:8000/users", {
       name: formData.get("name"),
       email: formData.get("email"),
       team: formData.get("team"),

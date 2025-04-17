@@ -53,7 +53,7 @@ export const AiChat = memo(
           setIsLoading(true);
           onEnd?.(false);
 
-          const res = await fetch("http://52.231.108.153:8000/quiz/stream", {
+          const res = await fetch("http://40.82.129.29:8000/quiz/stream", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -105,7 +105,7 @@ export const AiChat = memo(
           onEnd?.(false);
 
           const res = await fetch(
-            `http://52.231.108.153:8000/summary-datas/${summaryDataMap[data]}?session_id=${sessionId}`,
+            `http://40.82.129.29:8000/summary-datas/${summaryDataMap[data]}?session_id=${sessionId}`,
             {
               method: "GET",
               headers: {
